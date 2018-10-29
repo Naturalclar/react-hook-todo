@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Form from './Form';
+import "./App.css"
+const App = () => {
+  const [todos, setTodos] = useState([]);
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+  const toggleComplete = (i) => setTodos(todos.map((todo, k) => k === i ? { ...todo, complete: !todo.complete }: todo))
+  return (
+    <div>
+      <Form onSubmit={text => setTodos([{text, complete: false}, ...todos])}/>
+      <div>
+        {
+          todos.map(({text, complete}, i) => (
+            <p 
+            key={i+text} 
+            style= {
+              {
+                textDecoration: complete ? "line-through" : ""
+              }
+            }
+            onClick={() => toggleComplete(i)}>{text}</p>
+          ))
+        }
       </div>
-    );
-  }
-}
+      <button onClick={() => {setTodos([])}}>Reset</button>
+    </div>
+    
+  );
+};
 
-export default App;
+export default App
